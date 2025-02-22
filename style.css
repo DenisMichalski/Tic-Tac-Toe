@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    background-color: rgb(95, 95, 144);
+}
+
+#gameboard {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 5px;
+    justify-content: center;
+    margin: 20px auto;
+    width: 310px;
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    background-color: lightgray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.cell:hover {
+    background-color: #d1d1d1;
+    /* Etwas dunkler */
+    transform: scale(1.05);
+    /* Leichte Vergrößerung */
+}
+
+.cell:active {
+    transform: scale(0.95);
+    /* Kleiner, wenn geklickt */
+}
+
+#reset-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-top: 20px;
+    cursor: pointer;
+    background-color: #ff4747;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.1s box-shadow 0.2s;
+}
+
+#reset-btn:hover {
+    background-color: #d43f3f;
+    /* Etwas dunkler beim Hover */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+#reset-btn:active {
+    transform: scale(0.95);
+    /* Leicht gedrückt */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.cell {
+    /* Vorherige Styles bleiben */
+    position: relative;
+}
+
+.cell span {
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.cell.filled span {
+    opacity: 1;
+    transform: scale(1);
+}
