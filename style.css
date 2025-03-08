@@ -24,19 +24,19 @@ body {
   font-size: 2em;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.1s;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .cell:hover {
-  background-color: #d1d1d1;
-  /* Etwas dunkler */
-  transform: scale(1.05);
-  /* Leichte Vergrößerung */
+  background-color: lightgray;
+/* A little darker */
+  transform: scale(1.1);
+/* Slight enlargement */
 }
 
 .cell:active {
   transform: scale(0.95);
-  /* Kleiner, wenn geklickt */
+/* Smaller when clicked */
 }
 
 #reset-btn {
@@ -53,18 +53,18 @@ body {
 
 #reset-btn:hover {
   background-color: #d43f3f;
-  /* Etwas dunkler beim Hover */
+/* Slightly darker when hovering */
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 #reset-btn:active {
   transform: scale(0.95);
-  /* Leicht gedrückt */
+/* Lightly pressed */
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .cell {
-  /* Vorherige Styles bleiben */
+/* Previous styles remain */
   position: relative;
 }
 
