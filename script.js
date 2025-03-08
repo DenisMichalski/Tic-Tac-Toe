@@ -100,16 +100,21 @@ const GameController = (function () {
         currentPlayer.marker; // Update UI
 
       if (checkWin()) {
-        setTimeout(() => alert(`${currentPlayer.name} wins! 🎉`), 100);
-        setBoardState(false);
+        setTimeout(() => {
+          alert(`${currentPlayer.name} wins! 🎉`);
+          setBoardState(false);
+        }, 300); // Slightly longer delay for better UX
         return;
       }
 
       if (checkDraw()) {
-        setTimeout(() => alert(`It's a Draw! 🤝`), 100);
-        setBoardState(false);
+        setTimeout(() => {
+          alert(`It's a Draw! 🤝`);
+          setBoardState(false);
+        }, 300); // Aligns with the Victory Alert
         return;
       }
+
 
       switchPlayer();
     } else {
