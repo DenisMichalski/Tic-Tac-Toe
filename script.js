@@ -129,7 +129,7 @@ const GameController = (function () {
     Gameboard.resetBoard();
     document.querySelectorAll(".cell").forEach((cell) => {
       cell.textContent = ""; // clear the playing field
-      cell.classList.remove("winner");
+      cell.classList.remove("winner"); // Remove winning color
     });
     enableBoard();
     currentPlayer = player1; // Restart with Player 1
