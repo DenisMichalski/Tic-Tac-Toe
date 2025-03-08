@@ -87,17 +87,10 @@ const GameController = (function () {
     return Gameboard.getBoard().every((cell) => cell !== ""); // All fields are filled
   };
 
-  // function to deactivate the playing field
-  const disableBoard = () => {
-    document.querySelectorAll(".cell").forEach((cell) => {
-      cell.style.pointerEvents = "none"; // ❌ Disable clicks on the playing field
-    });
-  };
-
-  // Function to activate the playing field (when resetting)
-  const enableBoard = () => {
+  // function to deactivate the playing field and Function to activate the playing field (when resetting)
+  const setBoardState = (enabled) => {
     document.querySelectorAll(".cell").forEach(cell => {
-      cell.style.pointerEvents = "auto";
+      cell.style.pointerEvents = enabled ? "auto" : "none";
     });
   };
 
@@ -108,13 +101,13 @@ const GameController = (function () {
 
       if (checkWin()) {
         setTimeout(() => alert(`${currentPlayer.name} wins! 🎉`), 100);
-        disableBoard();
+        setBoardState(false);
         return;
       }
 
       if (checkDraw()) {
         setTimeout(() => alert(`It's a Draw! 🤝`), 100);
-        disableBoard();
+        setBoardState(false);
         return;
       }
 
@@ -129,9 +122,9 @@ const GameController = (function () {
     Gameboard.resetBoard();
     document.querySelectorAll(".cell").forEach((cell) => {
       cell.textContent = ""; // clear the playing field
-      cell.classList.remove("winner"); // Remove winning color
+      cell.classList.remove("winner");
     });
-    enableBoard();
+    setBoardState(true);
     currentPlayer = player1; // Restart with Player 1
     updateCurrentPlayerDisplay();
   };
