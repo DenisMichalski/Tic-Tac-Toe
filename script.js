@@ -67,11 +67,19 @@ const GameController = (function () {
       const [a, b, c] = combo;
 
       if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+        highlightWinningCells(combo); // highlight winning cells
         return true; // One player has won
       }
     }
 
     return false;
+  };
+
+  // New cell highlighting feature
+  const highlightWinningCells = (winningCombo) => {
+    winningCombo.forEach(index => {
+      document.querySelectorAll(".cell")[index].classList.add("winner");
+    });
   };
 
   // Check if it's a Draw
