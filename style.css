@@ -119,3 +119,10 @@ body {
 .cell.animated {
   animation: fadeIn 0.3s ease-in-out;
 }
+
+#toggle-bot {
+  margin-top: 10px;
+  padding: 8px 15px;
+  font-size: 1rem;
+  cursor: pointer;
+}

@@ -35,7 +35,6 @@ const Player = (name, marker) => {
 
 // Game Controller: Manages game flow
 const GameController = (function () {
-
   const moveSound = new Audio("sounds/move.mp3");
   const winSound = new Audio("sounds/win.wav");
   const drawSound = new Audio("sounds/draw.wav");
@@ -43,6 +42,7 @@ const GameController = (function () {
   let player1 = Player("Player 1", "X");
   let player2 = Player("Player 2", "O");
   let currentPlayer = player1;
+  let isBotActive = false;
   let player1Score = 0;
   let player2Score = 0;
   let drawScore = 0;
@@ -97,23 +97,21 @@ const GameController = (function () {
 
   // function to deactivate the playing field and Function to activate the playing field (when resetting)
   const setBoardState = (enabled) => {
-    document.querySelectorAll(".cell").forEach(cell => {
+    document.querySelectorAll(".cell").forEach((cell) => {
       cell.style.pointerEvents = enabled ? "auto" : "none";
     });
   };
 
   const playRound = (index) => {
     if (Gameboard.placeMarker(index, currentPlayer.marker)) {
-      document.querySelectorAll(".cell")[index].textContent =
-        currentPlayer.marker; // Update UI
+      document.querySelectorAll(".cell")[index];
+      cell.textContent = currentPlayer.marker; // Update UI
       moveSound.play();
 
-      document.querySelectorAll(".cell")[index].classList.add("animated");
-
-      // Remove animation after a short time so that it will be played again on the next turn
-      setTimeout(() => {
-        document.querySelectorAll(".cell")[index].classList.remove("animated");
-      }, 300);
+      // Animation
+      cell.classList.remove("animated");
+      void cell.offsetWidth;
+      cell.classList.add("animated");
 
       if (checkWin()) {
         if (currentPlayer === player1) {
@@ -121,7 +119,6 @@ const GameController = (function () {
         } else {
           player2Score++;
         }
-
         updateScoreboard();
 
         setTimeout(() => {
@@ -144,10 +141,16 @@ const GameController = (function () {
       }
 
       switchPlayer();
+
+      // Bot should move after each move of player 1
+      if (isBotActive && currentPlayer === player2) {
+        setTimeout(botMove, 500);
+      }
     } else {
       alert("This cell is already occupied!");
     }
   };
+
 
   // Reset game
   const resetGame = () => {
@@ -161,11 +164,32 @@ const GameController = (function () {
     updateCurrentPlayerDisplay();
   };
 
+  // Update and display score
   const updateScoreboard = () => {
     document.getElementById("player1-score").textContent = player1Score;
     document.getElementById("player2-score").textContent = player2Score;
     document.getElementById("draw-score").textContent = drawScore;
-  }
+  };
+
+  //function for the AI ​​move (random move)
+  const botMove = () => {
+    if (!isBotActive || currentPlayer !== player2) return; // Only when bot is active and on
+
+    const emptyCells = Gameboard.getBoard()
+      .map((cell, index) => (cell === "" ? index : null))
+      .filter((index) => index !== null);
+
+    if (emptyCells.length === 0) return; // If the board is full
+
+    const randomIndex =
+      emptyCells[Math.floor(Math.random() * emptyCells.length)];
+    setTimeout(() => playRound(randomIndex), 500); // Simulates a little "thinking time"
+  };
+
+  const setBotActive = (value) => {
+    isBotActive = value;
+  };
+  const getBotActive = () => isBotActive;
 
   return {
     playRound,
@@ -174,6 +198,10 @@ const GameController = (function () {
     resetGame,
     checkWin,
     checkDraw,
+    botMove,
+    isBotActive,
+    setBotActive, 
+    getBotActive,
   };
 })();
 
@@ -201,5 +229,13 @@ document.addEventListener("DOMContentLoaded", () => {
     GameController.resetGame();
   });
 
+  document.getElementById("toggle-bot").addEventListener("click", () => {
+    GameController.setBotActive(!GameController.getBotActive());
+    document.getElementById("toggle-bot").textContent =
+      GameController.getBotActive() ? "👤 Play vs Player" : "🤖 Play vs Bot";
+    GameController.resetGame();
+  });
+
   updateCurrentPlayerDisplay(); // Start with display of player 1
+
 });
