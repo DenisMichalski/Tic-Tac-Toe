@@ -35,6 +35,11 @@ const Player = (name, marker) => {
 
 // Game Controller: Manages game flow
 const GameController = (function () {
+
+  const moveSound = new Audio("sounds/move.mp3");
+  const winSound = new Audio("sounds/win.wav");
+  const drawSound = new Audio("sounds/draw.wav");
+
   let player1 = Player("Player 1", "X");
   let player2 = Player("Player 2", "O");
   let currentPlayer = player1;
@@ -101,6 +106,7 @@ const GameController = (function () {
     if (Gameboard.placeMarker(index, currentPlayer.marker)) {
       document.querySelectorAll(".cell")[index].textContent =
         currentPlayer.marker; // Update UI
+      moveSound.play();
 
       document.querySelectorAll(".cell")[index].classList.add("animated");
 
@@ -130,7 +136,7 @@ const GameController = (function () {
         drawScore++;
         updateScoreboard();
         setTimeout(() => {
-          drawScore.play();
+          drawSound.play();
           alert(`It's a Draw! 🤝`);
         }, 300);
         setBoardState(false);
