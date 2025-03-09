@@ -93,3 +93,9 @@ body {
     transform: scale(1.1);
   }
 }
+
+#scoreboard {
+  font-size: 2rem;
+  margin-top: 10px;
+  text-align: center;
+}
