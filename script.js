@@ -38,6 +38,9 @@ const GameController = (function () {
   let player1 = Player("Player 1", "X");
   let player2 = Player("Player 2", "O");
   let currentPlayer = player1;
+  let player1Score = 0;
+  let player2Score = 0;
+  let drawScore = 0;
 
   // Switch players after a valid move
   const switchPlayer = () => {
@@ -100,21 +103,32 @@ const GameController = (function () {
         currentPlayer.marker; // Update UI
 
       if (checkWin()) {
+        if (currentPlayer === player1) {
+          player1Score++;
+        } else {
+          player2Score++;
+        } 
+
+        updateScoreboard();
+
         setTimeout(() => {
+          winSound.play();
           alert(`${currentPlayer.name} wins! 🎉`);
-          setBoardState(false);
-        }, 300); // Slightly longer delay for better UX
+        }, 300)
+        setBoardState(false);
         return;
-      }
+     }
 
       if (checkDraw()) {
+        drawScore++;
+        updateScoreboard();
         setTimeout(() => {
+          drawScore.play();
           alert(`It's a Draw! 🤝`);
-          setBoardState(false);
-        }, 300); // Aligns with the Victory Alert
+        }, 300);
+        setBoardState(false);
         return;
       }
-
 
       switchPlayer();
     } else {
@@ -133,6 +147,12 @@ const GameController = (function () {
     currentPlayer = player1; // Restart with Player 1
     updateCurrentPlayerDisplay();
   };
+
+  const updateScoreboard = () => {
+    document.getElementById("player1-score").textContent = player1Score;
+    document.getElementById("player2-score").textContent = player2Score;
+    document.getElementById("draw-score").textContent = drawScore;
+  }
 
   return {
     playRound,
