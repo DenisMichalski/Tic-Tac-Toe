@@ -102,22 +102,29 @@ const GameController = (function () {
       document.querySelectorAll(".cell")[index].textContent =
         currentPlayer.marker; // Update UI
 
+      document.querySelectorAll(".cell")[index].classList.add("animated");
+
+      // Remove animation after a short time so that it will be played again on the next turn
+      setTimeout(() => {
+        document.querySelectorAll(".cell")[index].classList.remove("animated");
+      }, 300);
+
       if (checkWin()) {
         if (currentPlayer === player1) {
           player1Score++;
         } else {
           player2Score++;
-        } 
+        }
 
         updateScoreboard();
 
         setTimeout(() => {
           winSound.play();
           alert(`${currentPlayer.name} wins! 🎉`);
-        }, 300)
+        }, 300);
         setBoardState(false);
         return;
-     }
+      }
 
       if (checkDraw()) {
         drawScore++;
