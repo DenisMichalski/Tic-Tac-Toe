@@ -1,13 +1,10 @@
 //----------------------------Step 1: The Gameboard Module--------------------------------//
 
-// Gameboard Module: Manages the Tic-Tac-Toe board
 const Gameboard = (function () {
   let board = ["", "", "", "", "", "", "", "", ""];
 
-  // Get current board state
   const getBoard = () => board;
 
-  // Place a marker if the spot is empty
   const placeMarker = (index, marker) => {
     if (board[index] === "") {
       board[index] = marker;
@@ -16,7 +13,6 @@ const Gameboard = (function () {
     return false;
   };
 
-  // Reset the board
   const resetBoard = () => {
     board = ["", "", "", "", "", "", "", "", ""];
   };
@@ -26,14 +22,12 @@ const Gameboard = (function () {
 
 //-----------------------------Step 2: The Player Function--------------------------------//
 
-// Player Factory Function: creates player objects
 const Player = (name, marker) => {
   return { name, marker };
 };
 
 //-----------------------------Step 3: The Game Controller-----------------------------------//
 
-// Game Controller: Manages game flow
 const GameController = (function () {
   const moveSound = new Audio("sounds/move.mp3");
   const winSound = new Audio("sounds/win.wav");
@@ -46,56 +40,47 @@ const GameController = (function () {
   let player1Score = 0;
   let player2Score = 0;
   let drawScore = 0;
+  let roundCounter = 0;
+  const maxRounds = 5; // Maximale Rundenanzahl
 
-  // Switch players after a valid move
   const switchPlayer = () => {
     currentPlayer = currentPlayer === player1 ? player2 : player1;
     updateCurrentPlayerDisplay();
   };
 
-  // Get the current player
   const getCurrentPlayer = () => currentPlayer;
 
   const checkWin = () => {
     const board = Gameboard.getBoard();
-
-    // All possible winning combinations
     const winningCombos = [
       [0, 1, 2],
       [3, 4, 5],
-      [6, 7, 8], // Horizontal
+      [6, 7, 8],
       [0, 3, 6],
       [1, 4, 7],
-      [2, 5, 8], // Vertical
+      [2, 5, 8],
       [0, 4, 8],
-      [2, 4, 6], // Diagonal
+      [2, 4, 6],
     ];
 
     for (let combo of winningCombos) {
       const [a, b, c] = combo;
-
       if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-        highlightWinningCells(combo); // highlight winning cells
-        return true; // One player has won
+        highlightWinningCells(combo);
+        return true;
       }
     }
-
     return false;
   };
 
-  // New cell highlighting feature
   const highlightWinningCells = (winningCombo) => {
     winningCombo.forEach((index) => {
       document.querySelectorAll(".cell")[index].classList.add("winner");
     });
   };
 
-  // Check if it's a Draw
-  const checkDraw = () => {
-    return Gameboard.getBoard().every((cell) => cell !== ""); // All fields are filled
-  };
+  const checkDraw = () => Gameboard.getBoard().every((cell) => cell !== "");
 
-  // function to deactivate the playing field and Function to activate the playing field (when resetting)
   const setBoardState = (enabled) => {
     document.querySelectorAll(".cell").forEach((cell) => {
       cell.style.pointerEvents = enabled ? "auto" : "none";
@@ -104,28 +89,25 @@ const GameController = (function () {
 
   const playRound = (index) => {
     if (Gameboard.placeMarker(index, currentPlayer.marker)) {
-      document.querySelectorAll(".cell")[index];
-      cell.textContent = currentPlayer.marker; // Update UI
+      const cell = document.querySelectorAll(".cell")[index];
+      cell.textContent = currentPlayer.marker;
       moveSound.play();
 
-      // Animation
       cell.classList.remove("animated");
       void cell.offsetWidth;
       cell.classList.add("animated");
 
       if (checkWin()) {
-        if (currentPlayer === player1) {
-          player1Score++;
-        } else {
-          player2Score++;
-        }
+        currentPlayer === player1 ? player1Score++ : player2Score++;
         updateScoreboard();
 
         setTimeout(() => {
           winSound.play();
           alert(`${currentPlayer.name} wins! 🎉`);
         }, 300);
-        setBoardState(false);
+
+        roundCounter++;
+        endGameCheck();
         return;
       }
 
@@ -136,13 +118,13 @@ const GameController = (function () {
           drawSound.play();
           alert(`It's a Draw! 🤝`);
         }, 300);
-        setBoardState(false);
+
+        roundCounter++;
+        endGameCheck();
         return;
       }
 
       switchPlayer();
-
-      // Bot should move after each move of player 1
       if (isBotActive && currentPlayer === player2) {
         setTimeout(botMove, 500);
       }
@@ -151,39 +133,63 @@ const GameController = (function () {
     }
   };
 
-
-  // Reset game
   const resetGame = () => {
     Gameboard.resetBoard();
     document.querySelectorAll(".cell").forEach((cell) => {
-      cell.textContent = ""; // clear the playing field
+      cell.textContent = "";
       cell.classList.remove("winner");
     });
     setBoardState(true);
-    currentPlayer = player1; // Restart with Player 1
+    currentPlayer = player1;
     updateCurrentPlayerDisplay();
   };
 
-  // Update and display score
   const updateScoreboard = () => {
     document.getElementById("player1-score").textContent = player1Score;
     document.getElementById("player2-score").textContent = player2Score;
     document.getElementById("draw-score").textContent = drawScore;
   };
 
-  //function for the AI ​​move (random move)
   const botMove = () => {
-    if (!isBotActive || currentPlayer !== player2) return; // Only when bot is active and on
+    if (!isBotActive || currentPlayer !== player2) return;
 
     const emptyCells = Gameboard.getBoard()
       .map((cell, index) => (cell === "" ? index : null))
       .filter((index) => index !== null);
 
-    if (emptyCells.length === 0) return; // If the board is full
+    if (emptyCells.length === 0) return;
 
     const randomIndex =
       emptyCells[Math.floor(Math.random() * emptyCells.length)];
-    setTimeout(() => playRound(randomIndex), 500); // Simulates a little "thinking time"
+    setTimeout(() => playRound(randomIndex), 500);
+  };
+
+  const endGameCheck = () => {
+    if (roundCounter >= maxRounds) {
+      setTimeout(() => {
+        let winner;
+        if (player1Score > player2Score) {
+          winner = "🎉 Player 1 wins the series!";
+        } else if (player2Score > player1Score) {
+          winner = "🏆 Player 2 wins the series!";
+        } else {
+          winner = "🤝 The series ends in a draw!";
+        }
+        alert(`Game over! ${winner}`);
+        resetSeries();
+      }, 500);
+    } else {
+      resetGame();
+    }
+  };
+
+  const resetSeries = () => {
+    player1Score = 0;
+    player2Score = 0;
+    drawScore = 0;
+    roundCounter = 0;
+    updateScoreboard();
+    resetGame();
   };
 
   const setBotActive = (value) => {
@@ -199,8 +205,7 @@ const GameController = (function () {
     checkWin,
     checkDraw,
     botMove,
-    isBotActive,
-    setBotActive, 
+    setBotActive,
     getBotActive,
   };
 })();
@@ -236,6 +241,5 @@ document.addEventListener("DOMContentLoaded", () => {
     GameController.resetGame();
   });
 
-  updateCurrentPlayerDisplay(); // Start with display of player 1
-
+  updateCurrentPlayerDisplay();
 });
