@@ -1,82 +1,62 @@
-Tic-Tac-Toe Game
+📝 Tic-Tac-Toe Game
+A classic Tic-Tac-Toe game with exciting additions such as animations, sound effects, a bot opponent and a 5-round tournament mode!
 
-Introduction
+🚀 Features
+✅ Classic Tic-Tac-Toe: Two players compete against each other.
+✅ Play against the computer: Play against a simple AI.
+✅ Animations: Marks are set with an animation.
+✅ Sound effects:
 
-This project is a simple Tic-Tac-Toe game built with HTML, CSS, and JavaScript. It follows a modular approach using JavaScript modules and factory functions to keep the code organized and scalable.
+🏁 Move → Sound effect when setting a mark
+🎉 Win → Victory sound
+🤝 Draw → Draw sound
+✅ 5-round tournament mode: Whoever has the most wins after 5 rounds wins the game!
+✅ Score display: Wins, draws and the current round are counted.
+🖥️ Demo
+👉 Live Demo on GitHub Pages
 
-Features
+⚙️ Installation & Usage
+Clone repository:
+bash
+Copy
+Edit
+git clone https://github.com/DenisMichalski/Project-Tic-Tac-Toe.git
+Open index.html in your browser.
+Start playing!
+🎮 How to play
+1️⃣ Two game modes:
 
-- Players take turns placing their markers (X or O) on a 3x3 grid.
+👤 Player vs. Player: Two players take turns placing Xs and Os.
+🤖 Player vs. Bot: Play against a simple AI.
+2️⃣ Moves:
 
-- The game detects wins, draws, and prevents invalid moves.
+Click on a square to place your mark.
+Your opponent (or the bot) is next.
+3️⃣ Win:
 
-- A reset button allows restarting the game at any time.
+Three identical symbols in a row (horizontal, vertical or diagonal) win.
+If all fields are occupied and there is no winner, it is a tie.
+4️⃣ Tournament mode (5 rounds):
 
-- Interactive UI with basic animations for better user experience.
+After 5 rounds, the overall winner is determined.
+The player with the most wins wins!
+If there is a tie, the series ends in a draw.
+5️⃣ Controls:
 
-Project Structure
+🎮 Start a new game: Click on the "Reset" button.
+🤖 Switch bot mode: Click on "Play vs Bot" / "Play vs Player".
 
-Tic-Tac-Toe/
-│── index.html        # Main HTML file
-│── styles.css        # Styles for the game
-│── script.js         # JavaScript game logic
-│── README.md         # Project documentation
+🛠 Technologies
+HTML – structure of the game
+CSS – animations & layout
+JavaScript – game logic and interactivity
 
-How to Run the Game
+💡 To-do / ideas for improvements
+🔹 Advanced AI: Better opponent AI with minimax algorithm
+🔹 Dark mode: design adjustments for better visibility
+🔹 Online multiplayer: play against friends over the internet
 
-1. Download or Clone the Repository
+📜 License
+This project is under the MIT license. Free to use and adapt!
 
-git clone https://github.com/yourusername/tic-tac-toe.git
-cd tic-tac-toe
-
-2. Open index.html in a browser
-
-No additional dependencies or setup is required.
-
------------------Step-by-Step Guide----------------
-
-1. Step 1: Create the Gameboard Module
-
-The Gameboard module manages the 3x3 grid.
-
-It stores the board state in an array and provides functions to update it.
-
-2. Step 2: Define Player Objects
-
-The Player factory function creates player objects with names and assigned markers (X or O).
-
-3. Step 3: Implement the Game Controller
-
-The GameController module manages player turns, checks for wins, and handles game logic.
-
-It switches players and validates moves.
-
-4. Step 4: Connect JavaScript to the DOM
-
-JavaScript listens for user clicks on the game board.
-
-Updates the UI dynamically based on player actions.
-
-5. Step 5: Handle Win and Draw Conditions
-
-Checks if a player has won by matching a row, column, or diagonal.
-
-If all spaces are filled without a winner, it's a draw.
-
-6. Step 6: Implement the Reset Function
-
-Resets the board and starts a new game while keeping the player order.
-
----------------Future Improvements-------------------------
-
-- Add animations and sound effects.
-
-- Implement an AI opponent.
-
-- Improve responsiveness for mobile devices.
-
-License
-
-This project is open-source and free to use for learning and development purposes.
-
-Best regards, Denis Michalski
+🎉 Have fun playing! 🕹️💡
