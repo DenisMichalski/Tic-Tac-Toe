@@ -108,22 +108,34 @@ const GameController = (function () {
       void cell.offsetWidth;
       cell.classList.add("animated");
 
-      if (checkWin()) {
-        if (currentPlayer === player1) {
-          player1Score++;
-        } else {
-          player2Score++;
-        }
-        updateScoreboard();
-        setTimeout(() => {
-          winSound.play();
-          alert(`${currentPlayer.name} wins this round! 🎉`);
-        }, 300);
-        setBoardState(false);
-        roundCount++; // Runde erhöhen
-        checkTournamentWinner(); // Prüft, ob das Turnier vorbei ist
-        return;
-      }
+     if (checkWin()) {
+       if (currentPlayer === player1) {
+         player1Score++;
+       } else {
+         player2Score++;
+       }
+       updateScoreboard();
+
+       setTimeout(() => {
+         winSound.play();
+         alert(`${currentPlayer.name} wins this round! 🎉`);
+       }, 300);
+
+       setBoardState(false);
+       roundCount++; // Runde erhöhen
+
+       if (roundCount < totalRounds) {
+         setTimeout(resetGame, 1000); // Nach kurzer Zeit nächste Runde starten
+       } else {
+         setTimeout(() => {
+           checkTournamentWinner();
+         }, 1000);
+       }
+
+       return;
+     }
+
+
 
       if (checkDraw()) {
         drawScore++;
@@ -148,35 +160,7 @@ const GameController = (function () {
     }
   };
 
-  const checkTournamentWinner = () => {
-    if (roundCount >= totalRounds) {
-      let winner = "";
-      if (player1Score > player2Score) {
-        winner = `${player1.name} wins the tournament! 🏆`;
-      } else if (player2Score > player1Score) {
-        winner = `${player2.name} wins the tournament! 🏆`;
-      } else {
-        winner = "The tournament ends in a draw! 🤝";
-      }
-
-      setTimeout(() => {
-        alert(winner);
-        resetTournament();
-      }, 500);
-    }
-  };
-
-
-  const resetTournament = () => {
-    player1Score = 0;
-    player2Score = 0;
-    drawScore = 0;
-    roundCount = 0;
-    updateScoreboard();
-    GameController.resetGame();
-  };
-
-
+  
   // Reset game
   const resetGame = () => {
     Gameboard.resetBoard();
@@ -187,6 +171,33 @@ const GameController = (function () {
     setBoardState(true);
     currentPlayer = player1; // Restart with Player 1
     updateCurrentPlayerDisplay();
+  };
+
+  const checkTournamentWinner = () => {
+    if (roundCount >= totalRounds) {
+      let winnerMessage = "";
+      if (player1Score > player2Score) {
+        winnerMessage = `${player1.name} wins the tournament! 🏆`;
+      } else if (player2Score > player1Score) {
+        winnerMessage = `${player2.name} wins the tournament! 🏆`;
+      } else {
+        winnerMessage = "The tournament ends in a draw! 🤝";
+      }
+
+      setTimeout(() => {
+        alert(winnerMessage);
+        resetTournament();
+      }, 500);
+    }
+  };
+
+  const resetTournament = () => {
+    player1Score = 0;
+    player2Score = 0;
+    drawScore = 0;
+    roundCount = 0;
+    updateScoreboard();
+    resetGame();
   };
 
   // Update and display score
