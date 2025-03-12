@@ -118,6 +118,7 @@ const GameController = (function () {
         setTimeout(() => {
           winSound.play();
           alert(`${currentPlayer.name} wins! 🎉`);
+          GameController.resetGame();
         }, 300);
         setBoardState(false);
         return;
