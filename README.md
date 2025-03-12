@@ -1,5 +1,5 @@
 📝 Tic-Tac-Toe Game
-A classic Tic-Tac-Toe game with exciting additions such as animations, sound effects, a bot opponent and a 5-round tournament mode!
+A classic Tic-Tac-Toe game with exciting additions such as animations, sound effects, a bot opponent and a 3-round tournament mode!
 
 🚀 Features
 ✅ Classic Tic-Tac-Toe: Two players compete against each other.
@@ -36,7 +36,7 @@ Your opponent (or the bot) is next.
 
 Three identical symbols in a row (horizontal, vertical or diagonal) win.
 If all fields are occupied and there is no winner, it is a tie.
-4️⃣ Tournament mode (5 rounds):
+4️⃣ Tournament mode (3 rounds):
 
 After 5 rounds, the overall winner is determined.
 The player with the most wins wins!
@@ -55,6 +55,8 @@ JavaScript – game logic and interactivity
 🔹 Advanced AI: Better opponent AI with minimax algorithm
 🔹 Dark mode: design adjustments for better visibility
 🔹 Online multiplayer: play against friends over the internet
+🔹 UI/UX Improvement
+   Instead of alert() messages (which can be annoying), an in-game overlay or a message in the game area could display the result.
 
 📜 License
 This project is under the MIT license. Free to use and adapt!
