@@ -46,6 +46,8 @@ const GameController = (function () {
   let player1Score = 0;
   let player2Score = 0;
   let drawScore = 0;
+  let roundCount = 0;
+  let totalRounds = 3;
 
   // Switch players after a valid move
   const switchPlayer = () => {
@@ -99,12 +101,11 @@ const GameController = (function () {
   const playRound = (index) => {
     if (Gameboard.placeMarker(index, currentPlayer.marker)) {
       const cell = document.querySelectorAll(".cell")[index];
-      cell.textContent = currentPlayer.marker; // Update UI
+      cell.textContent = currentPlayer.marker;
       moveSound.play();
 
-      // Animation
-      cell.classList.remove("animated"); 
-      void cell.offsetWidth; 
+      cell.classList.remove("animated");
+      void cell.offsetWidth;
       cell.classList.add("animated");
 
       if (checkWin()) {
@@ -114,13 +115,13 @@ const GameController = (function () {
           player2Score++;
         }
         updateScoreboard();
-
         setTimeout(() => {
           winSound.play();
-          alert(`${currentPlayer.name} wins! 🎉`);
-          GameController.resetGame();
+          alert(`${currentPlayer.name} wins this round! 🎉`);
         }, 300);
         setBoardState(false);
+        roundCount++; // Runde erhöhen
+        checkTournamentWinner(); // Prüft, ob das Turnier vorbei ist
         return;
       }
 
@@ -132,19 +133,49 @@ const GameController = (function () {
           alert(`It's a Draw! 🤝`);
         }, 300);
         setBoardState(false);
+        roundCount++; // Runde erhöhen
+        checkTournamentWinner();
         return;
       }
 
       switchPlayer();
 
-      // Bot should move after each move of player 1
       if (isBotActive && currentPlayer === player2) {
-        setTimeout(botMove, 500); // Simulates a little "thinking time"
+        setTimeout(botMove, 500);
       }
     } else {
       alert("This cell is already occupied!");
     }
   };
+
+  const checkTournamentWinner = () => {
+    if (roundCount >= totalRounds) {
+      let winner = "";
+      if (player1Score > player2Score) {
+        winner = `${player1.name} wins the tournament! 🏆`;
+      } else if (player2Score > player1Score) {
+        winner = `${player2.name} wins the tournament! 🏆`;
+      } else {
+        winner = "The tournament ends in a draw! 🤝";
+      }
+
+      setTimeout(() => {
+        alert(winner);
+        resetTournament();
+      }, 500);
+    }
+  };
+
+
+  const resetTournament = () => {
+    player1Score = 0;
+    player2Score = 0;
+    drawScore = 0;
+    roundCount = 0;
+    updateScoreboard();
+    GameController.resetGame();
+  };
+
 
   // Reset game
   const resetGame = () => {

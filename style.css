@@ -81,8 +81,8 @@ body {
 
 /* for the winning cells */
 .winner {
-  background-color: gold;
-  animation: glow 1s infinite alternate;
+  background-color: gold !important;
+  animation: glow 1s infinite alternate !important;
 }
 
 @keyframes glow {
